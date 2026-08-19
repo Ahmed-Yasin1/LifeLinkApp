@@ -25,8 +25,7 @@ const connectDB = async () => {
   }
 
   if (!useMemoryFallback) {
-    console.error('MongoDB connection failed and in-memory fallback is disabled. Please start your MongoDB service or set MONGODB_URI correctly.')
-    process.exit(1)
+    throw new Error('MongoDB connection failed. Set MONGO_URL or MONGODB_URI environment variable correctly.')
   }
 
   try {
@@ -46,8 +45,7 @@ const connectDB = async () => {
     console.log(`MongoDB in-memory server connected: ${mongoose.connection.host}`)
     console.warn('Running with an in-memory database. Data will not persist after restart.')
   } catch (error) {
-    console.error('MongoDB in-memory connection failed:', error.message)
-    process.exit(1)
+    throw new Error(`MongoDB in-memory connection failed: ${error.message}`)
   }
 }
 
