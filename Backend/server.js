@@ -41,12 +41,7 @@ const seedAdminUser = async () => {
   }
 }
 
-try {
-  await connectDB()
-  await seedAdminUser()
-} catch (error) {
-  console.warn('Database connection skipped at startup:', error.message)
-}
+
 
 // Support multiple origins: comma-separated FRONTEND_URL or Railway wildcard
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
@@ -88,3 +83,9 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })
+
+// Connect to MongoDB AFTER server starts — keeps healthcheck fast
+connectDB()
+  .then(() => seedAdminUser())
+  .catch((err) => console.warn('Database connection skipped at startup:', err.message))
+
