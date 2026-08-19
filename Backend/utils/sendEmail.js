@@ -56,21 +56,21 @@ export const sendEmail = async (options) => {
     const htmlBody = options.html || `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 10px;">
         <div style="background: linear-gradient(135deg, #c0392b, #e74c3c); padding: 20px; border-radius: 10px 10px 0 0; text-align: center;">
-          <h1 style="color: white; margin: 0; font-size: 24px;">🩸 LifeLink Hub</h1>
+          <h1 style="color: white; margin: 0; font-size: 24px;">🩸 Smart Blood Donation</h1>
           <p style="color: rgba(255,255,255,0.85); margin: 5px 0 0;">Blood Donation System</p>
         </div>
         <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e0e0e0;">
-          <h2 style="color: #c0392b; margin-top: 0;">${options.subject.replace('LifeLink Hub: ', '')}</h2>
+          <h2 style="color: #c0392b; margin-top: 0;">${options.subject.replace('Smart Blood Donation: ', '')}</h2>
           <p style="color: #333; line-height: 1.8; white-space: pre-line;">${options.message}</p>
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
-            <p style="color: #999; font-size: 12px;">This is an automated message from LifeLink Hub Blood Donation System.</p>
+            <p style="color: #999; font-size: 12px;">This is an automated message from Smart Blood Donation.</p>
           </div>
         </div>
       </div>
     `;
 
     const mailOptions = {
-      from: `LifeLink Hub <${EMAIL_USER}>`,
+      from: `Smart Blood Donation <${EMAIL_USER}>`,
       to: options.email,
       subject: options.subject,
       text: options.message,

@@ -60,7 +60,7 @@ const Home = () => {
         <div className="nav-container">
           <div className="nav-brand">
             <span className="brand-icon">🩸</span>
-            <span className="brand-text">LifeLink</span>
+            <span className="brand-text">Smart Blood Donation</span>
           </div>
           <div className="nav-links">
             <a href="#home">Home</a>
@@ -301,7 +301,7 @@ const Home = () => {
           <div className="footer-col">
             <div className="footer-brand">
               <span className="brand-icon">🩸</span>
-              <span>LifeLink</span>
+              <span>Smart Blood Donation</span>
             </div>
             <p className="footer-desc">
               A professional blood donation management system connecting medical professionals and verified hospitals with critical blood supplies.

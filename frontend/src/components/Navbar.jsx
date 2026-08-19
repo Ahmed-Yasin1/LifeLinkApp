@@ -24,7 +24,7 @@ export default function Navbar() {
               <span>🩸</span>
             </div>
             <div style={s.brandTextWrap}>
-              <span style={s.brandTitle}>LifeLink Hub</span>
+              <span style={s.brandTitle}>Smart Blood Donation</span>
               <span style={s.brandSubtitle}>Blood Donation System</span>
             </div>
           </NavLink>

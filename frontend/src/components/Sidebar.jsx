@@ -88,7 +88,7 @@ export default function Sidebar() {
           <span style={s.brandIcon}>🩸</span>
         </div>
         <div style={s.brandTextWrap}>
-          <h6 style={s.brandTitle}>LifeLink Hub</h6>
+          <h6 style={s.brandTitle}>Smart Blood Donation</h6>
           <span style={s.brandSubtitle}>Blood Operations</span>
         </div>
       </div>

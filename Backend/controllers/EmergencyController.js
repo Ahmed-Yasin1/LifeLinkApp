@@ -104,8 +104,8 @@ export const createEmergencyRequest = async (req, res) => {
         if (donor.email) {
           return sendEmail({
             email: donor.email,
-            subject: `LifeLink Hub: Emergency Blood Request - ${emergencyRequest.bloodType}`,
-            message: `Hello ${donor.fullName},\n\nYou have been matched to an Emergency Blood Request from ${hospitalName}.\n\nBlood Type Needed: ${emergencyRequest.bloodType}\nUrgency: ${emergencyRequest.urgency}\nHospital Location: ${hospitalLocation}\n\nPlease log in to your LifeLink Hub account and respond as soon as possible.\n\nThank you for being a hero!\nLifeLink Hub Team`,
+            subject: `Smart Blood Donation: Emergency Blood Request - ${emergencyRequest.bloodType}`,
+            message: `Hello ${donor.fullName},\n\nYou have been matched to an Emergency Blood Request from ${hospitalName}.\n\nBlood Type Needed: ${emergencyRequest.bloodType}\nUrgency: ${emergencyRequest.urgency}\nHospital Location: ${hospitalLocation}\n\nPlease log in to your Smart Blood Donation account and respond as soon as possible.\n\nThank you for being a hero!\nSmart Blood Donation Team`,
           });
         }
       });
@@ -535,8 +535,8 @@ export const smartMatching = async (req, res) => {
       if (donor.email) {
         return sendEmail({
           email: donor.email,
-          subject: `LifeLink Hub: Emergency Blood Request - ${emergency.bloodType}`,
-          message: `Hello ${donor.fullName},\n\nYou have been matched to an Emergency Blood Request from ${hospitalName}.\n\nBlood Type Needed: ${emergency.bloodType}\nUrgency: ${emergency.urgency}\nHospital Location: ${hospitalLocation}\n\nPlease log in to your LifeLink Hub account and respond as soon as possible.\n\nThank you for being a hero!\nLifeLink Hub Team`,
+          subject: `Smart Blood Donation: Emergency Blood Request - ${emergency.bloodType}`,
+          message: `Hello ${donor.fullName},\n\nYou have been matched to an Emergency Blood Request from ${hospitalName}.\n\nBlood Type Needed: ${emergency.bloodType}\nUrgency: ${emergency.urgency}\nHospital Location: ${hospitalLocation}\n\nPlease log in to your Smart Blood Donation account and respond as soon as possible.\n\nThank you for being a hero!\nSmart Blood Donation Team`,
         });
       }
     });

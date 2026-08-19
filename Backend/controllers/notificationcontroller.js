@@ -46,8 +46,8 @@ export const sendNotification = async (req, res) => {
       if (donor && donor.email) {
         emailResult = await sendEmail({
           email: donor.email,
-          subject: `LifeLink Hub: ${title}`,
-          message: `Hello ${donor.fullName},\n\nYou have a new notification from LifeLink Hub:\n\n${title}\n${message}\n\nPlease log in to your account for more details.\n\nThank you,\nLifeLink Hub Team`,
+          subject: `Smart Blood Donation: ${title}`,
+          message: `Hello ${donor.fullName},\n\nYou have a new notification from Smart Blood Donation:\n\n${title}\n${message}\n\nPlease log in to your account for more details.\n\nThank you,\nSmart Blood Donation Team`,
         });
       }
     } catch (emailErr) {

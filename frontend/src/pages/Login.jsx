@@ -62,7 +62,7 @@ export default function Login() {
           {/* Top Logo */}
           <div style={s.logoRow}>
             <div style={s.logoIcon}>💧</div>
-            <span style={s.logoText}>LifeLink</span>
+            <span style={s.logoText}>Smart Blood Donation</span>
           </div>
 
           {/* Middle Main Content */}
