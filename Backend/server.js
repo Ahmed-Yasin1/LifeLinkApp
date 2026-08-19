@@ -48,6 +48,10 @@ const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
   .map((o) => o.trim())
 
+if (!allowedOrigins.includes('https://frontend-production-85a5.up.railway.app')) {
+  allowedOrigins.push('https://frontend-production-85a5.up.railway.app')
+}
+
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, Railway health checks)
