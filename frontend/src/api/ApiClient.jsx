@@ -3,7 +3,7 @@ import axios from 'axios'
 // In development, Vite forwards /api requests to the Express server.
 // Set VITE_API_URL when the frontend and API are hosted separately.
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
   headers: { 'Content-Type': 'application/json' },
 })
 
