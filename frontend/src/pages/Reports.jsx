@@ -9,6 +9,8 @@ const BLOOD_COLORS = {
   'O+':  '#16a34a', 'O-':  '#15803d',
 }
 
+const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+
 const statusColors = {
   Pending:   { bg: '#fef3c7', color: '#92400e', border: '#fde68a' },
   Approved:  { bg: '#d1fae5', color: '#065f46', border: '#6ee7b7' },
@@ -24,6 +26,25 @@ function StatCard({ icon, label, value, gradient, sub }) {
         <div style={styles.statValue}>{value ?? 0}</div>
         <div style={styles.statLabel}>{label}</div>
         {sub && <div style={styles.statSub}>{sub}</div>}
+      </div>
+    </div>
+  )
+}
+
+function DonorBloodBar({ group, donors, maxDonors }) {
+  const pct = maxDonors > 0 ? Math.round((donors / maxDonors) * 100) : 0
+  const color = BLOOD_COLORS[group] || '#dc2626'
+  return (
+    <div style={styles.barRow}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ ...styles.bloodDot, background: color }} />
+          <span style={styles.barLabel}>{group}</span>
+        </div>
+        <span style={styles.barUnits}>{donors} registered donors</span>
+      </div>
+      <div style={styles.barTrack}>
+        <div style={{ ...styles.barFill, width: `${pct}%`, background: color }} />
       </div>
     </div>
   )
@@ -112,6 +133,10 @@ export default function Reports() {
   const maxUnits = data?.bloodGroupStats
     ? Math.max(...data.bloodGroupStats.map((g) => g.units), 1)
     : 1
+  const maxRegisteredDonors = data?.registeredDonorBloodGroups
+    ? Math.max(...data.registeredDonorBloodGroups.map((g) => g.donors), 1)
+    : 1
+  const oPositiveUnits = data?.bloodGroupStats?.find((group) => group.bloodGroup === 'O+')?.units ?? 0
 
   return (
     <div style={styles.page}>
@@ -198,6 +223,13 @@ export default function Reports() {
               sub="In inventory"
             />
             <StatCard
+              icon="🩸"
+              label="O+ Available"
+              value={oPositiveUnits}
+              gradient="linear-gradient(135deg, #ea580c 0%, #c2410c 100%)"
+              sub="Units in inventory"
+            />
+            <StatCard
               icon="🚨"
               label="Total Requests"
               value={data.totalRequests}
@@ -278,6 +310,29 @@ export default function Reports() {
 
           </div>
 
+          {user?.role !== 'hospital' && (
+          <div style={{ ...styles.card, marginTop: 24 }}>
+              <div style={styles.cardHeader}>
+                <h2 style={styles.cardTitle}>👥 Registered Donors by Blood Type</h2>
+                <span style={styles.cardCount}>{data.registeredDonorBloodGroups?.length ?? 0} types</span>
+              </div>
+              {data.registeredDonorBloodGroups?.length > 0 ? (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 18 }}>
+                  {data.registeredDonorBloodGroups.map((group) => (
+                    <DonorBloodBar
+                      key={group.bloodGroup}
+                      group={group.bloodGroup}
+                      donors={group.donors}
+                      maxDonors={maxRegisteredDonors}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div style={styles.emptyBox}>No registered donor blood types available.</div>
+              )}
+            </div>
+          )}
+
           {/* ── Inventory Detail Table ── */}
           {data.inventoryDetails?.length > 0 && (
             <div style={{ ...styles.card, marginTop: 24 }}>
@@ -332,8 +387,62 @@ export default function Reports() {
             </div>
           )}
 
-          {/* ── Registered Hospitals Table (Admin only) ── */}
-          {user?.role !== 'hospital' && (
+          {/* ── District Registration Report ── */}
+            <div style={{ ...styles.card, marginTop: 24 }}>
+              <div style={styles.cardHeader}>
+                <h2 style={styles.cardTitle}>📍 District Registration Report</h2>
+                <span style={styles.cardCount}>{data.districtStats?.length ?? 0} districts</span>
+              </div>
+
+              {data.districtStats?.length > 0 ? (
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr style={styles.thead}>
+                        <th style={styles.th}>#</th>
+                        <th style={styles.th}>District</th>
+                        <th style={styles.th}>Registered Donors</th>
+                        <th style={styles.th}>Registered Hospitals</th>
+                        {BLOOD_TYPES.map((bloodType) => (
+                          <th key={bloodType} style={styles.th}>{bloodType}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.districtStats.map((item, i) => (
+                        <tr key={item.district} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                          <td style={styles.td}>
+                            <span style={{ background: '#f3f4f6', color: '#6b7280', borderRadius: 6, padding: '2px 8px', fontSize: 12, fontWeight: 600 }}>
+                              {i + 1}
+                            </span>
+                          </td>
+                          <td style={{ ...styles.td, fontWeight: 700, color: '#111827' }}>📍 {item.district}</td>
+                          <td style={styles.td}>
+                            <span style={{ ...styles.countBadge, background: '#fef2f2', color: '#b91c1c' }}>🩸 {item.donors}</span>
+                          </td>
+                          <td style={styles.td}>
+                            <span style={{ ...styles.countBadge, background: '#eff6ff', color: '#1d4ed8' }}>🏥 {item.hospitals}</span>
+                          </td>
+                          {BLOOD_TYPES.map((bloodType) => {
+                            const count = item.bloodGroups?.find((group) => group.bloodGroup === bloodType)?.donors || 0
+                            return (
+                              <td key={bloodType} style={styles.td}>
+                                <span style={{ ...styles.countBadge, background: `${BLOOD_COLORS[bloodType]}18`, color: BLOOD_COLORS[bloodType] }}>
+                                  {count}
+                                </span>
+                              </td>
+                            )
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div style={styles.emptyBox}>No district registration data available.</div>
+              )}
+            </div>
+
             <div style={{ ...styles.card, marginTop: 24 }}>
               <div style={styles.cardHeader}>
                 <h2 style={styles.cardTitle}>🏥 Registered Partner Hospitals</h2>
@@ -400,7 +509,6 @@ export default function Reports() {
                 </div>
               )}
             </div>
-          )}
         </>
       )}
 
@@ -514,6 +622,15 @@ const styles = {
     alignItems: 'center',
     gap: 18,
     boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+    countBadge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 5,
+      borderRadius: 999,
+      padding: '5px 10px',
+      fontWeight: 700,
+      minWidth: 64,
+    },
     color: '#fff',
   },
   statIcon: {
