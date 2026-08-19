@@ -8,7 +8,7 @@ import connectDB from './config/db.js'
 import User from './models/User.js'
 import authRoutes from './routes/authRoutes.js'
 import emergencyRoutes from './routes/emergencyRoutes.js'
-import notificationRoutes from './routes/notificationRoutes.js'
+import notificationRoutes from './routes/notificationroutes.js'
 import hospitalRoutes from "./routes/hospitalRoutes.js";
 import inventoryRoutes from "./routes/inventoryRoutes.js";
 import dashboardRoutes from "./routes/DashboardRoutes.js";
