@@ -10,7 +10,7 @@ import {
   updateDonationRecord,
   deleteDonationRecord,
   getDonationHistory,
-} from '../controllers/DonorController.js'
+} from '../controllers/donorController.js'
 import { protect } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 

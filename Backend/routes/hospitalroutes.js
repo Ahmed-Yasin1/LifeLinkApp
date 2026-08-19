@@ -6,7 +6,7 @@ getHospitals,
 getHospitalById,
 updateHospital,
 deleteHospital
-} from "../controllers/HospitalController.js";
+} from "../controllers/hospitalcontroller.js";
 
 
 const router = express.Router();

@@ -7,7 +7,7 @@ import {
   markAllAsRead,
   markAllHospitalSentRead,
   deleteNotification,
-} from "../controllers/NotificationController.js";
+} from "../controllers/notificationcontroller.js";
 import { protect } from '../middleware/authMiddleware.js'
 import { authorizeRoles } from '../middleware/roleMiddleware.js'
 
