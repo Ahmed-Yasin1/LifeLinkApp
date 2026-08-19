@@ -36,12 +36,17 @@ export const sendEmail = async (options) => {
       EMAIL_USER === 'your_email@gmail.com' ||
       EMAIL_PASS === 'your_app_password_here'
     ) {
-      logDebug('⚠️  [Email] Credentials missing or invalid in .env — email skipped.');
-      return;
+      logDebug('[Email] Credentials missing or invalid — email skipped. Set EMAIL_USER and EMAIL_PASS in Railway Variables.');
+      return { sent: false, error: 'Email credentials are not configured' };
     }
 
+    const smtpPort = Number(process.env.SMTP_PORT || 465);
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: smtpPort,
+      secure: process.env.SMTP_SECURE
+        ? process.env.SMTP_SECURE === 'true'
+        : smtpPort === 465,
       auth: {
         user: EMAIL_USER,
         pass: EMAIL_PASS,
@@ -75,7 +80,9 @@ export const sendEmail = async (options) => {
     logDebug(`Calling transporter.sendMail for ${options.email}...`);
     const info = await transporter.sendMail(mailOptions);
     logDebug(`✅ Email successfully sent to ${options.email} — ID: ${info.messageId}`);
+    return { sent: true, messageId: info.messageId };
   } catch (error) {
     logDebug(`❌ Failed to send email to ${options.email}: ${error.message}`);
+    return { sent: false, error: error.message };
   }
 };

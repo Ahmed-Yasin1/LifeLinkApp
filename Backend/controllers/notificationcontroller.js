@@ -39,23 +39,29 @@ export const sendNotification = async (req, res) => {
     await notification.populate("recipient", "fullName email bloodGroup district eligibilityStatus")
     await notification.populate("sender", "name email district")
 
-    // Send email to the donor
+    // Send email to the donor without preventing the in-app notification from being saved.
+    let emailResult = { sent: false, error: "Recipient has no email address" };
     try {
       const donor = await Donor.findById(recipient).select("email fullName");
       if (donor && donor.email) {
-        await sendEmail({
+        emailResult = await sendEmail({
           email: donor.email,
           subject: `LifeLink Hub: ${title}`,
           message: `Hello ${donor.fullName},\n\nYou have a new notification from LifeLink Hub:\n\n${title}\n${message}\n\nPlease log in to your account for more details.\n\nThank you,\nLifeLink Hub Team`,
         });
       }
     } catch (emailErr) {
+      emailResult = { sent: false, error: emailErr.message };
       console.error("Failed to send notification email:", emailErr.message);
     }
 
     return res.status(201).json({
       success: true,
-      message: "Notification sent successfully",
+      message: emailResult.sent
+        ? "Notification and email sent successfully"
+        : "Notification saved, but email was not sent",
+      emailSent: emailResult.sent,
+      emailError: emailResult.sent ? undefined : "Email delivery failed; check backend logs",
       data: notification,
     });
   } catch (error) {
