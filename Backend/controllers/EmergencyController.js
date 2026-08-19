@@ -109,7 +109,17 @@ export const createEmergencyRequest = async (req, res) => {
           });
         }
       });
-      await Promise.all(emailPromises);
+      // Do not hold the emergency request response open while SMTP sends emails.
+      Promise.all(emailPromises)
+        .then((emailResults) => {
+          const failedEmails = emailResults.filter((result) => result && !result.sent).length;
+          if (failedEmails > 0) {
+            console.warn(`Emergency notification: ${failedEmails} email(s) failed`);
+          }
+        })
+        .catch((emailError) => {
+          console.error('Emergency notification email dispatch failed:', emailError.message);
+        });
     }
 
     // System Notification for Admin and Hospital
