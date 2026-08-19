@@ -9,8 +9,8 @@ import User from './models/User.js'
 import authRoutes from './routes/authRoutes.js'
 import emergencyRoutes from './routes/emergencyRoutes.js'
 import notificationRoutes from './routes/notificationroutes.js'
-import hospitalRoutes from "./routes/hospitalRoutes.js";
-import inventoryRoutes from "./routes/inventoryRoutes.js";
+import hospitalRoutes from "./routes/hospitalroutes.js";
+import inventoryRoutes from "./routes/inventoryroutes.js";
 import dashboardRoutes from "./routes/DashboardRoutes.js";
 import ReportRoutes from "./routes/ReportRoutes.js";
 import donorRoutes from './routes/donorRoutes.js'
